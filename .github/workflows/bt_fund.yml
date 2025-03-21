@@ -1,4 +1,4 @@
-name: wifi-fund
+name: bt-fund
 
 on:
   workflow_dispatch:
