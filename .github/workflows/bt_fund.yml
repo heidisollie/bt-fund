@@ -1,0 +1,42 @@
+name: wifi-fund
+
+on:
+  workflow_dispatch:
+    inputs:
+      sdk:
+        description: 'NCS SDK branch'     
+        required: true
+        default: 'v3.0.0-preview1'
+      directory:
+        description: 'Repo version directory'
+        required: true
+        default: 'v2.9.0-v2.7.0'
+        options:
+            - v2.6.2-v2.3.0
+            - v2.9.0-v2.7.0
+  
+jobs:
+  sdk_version_print:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Adding markdown
+      run: |
+        echo 'nRF Connect SDK version:' >> $GITHUB_STEP_SUMMARY
+        echo ${{ inputs.sdk }} >> $GITHUB_STEP_SUMMARY
+ 
+  build_dk:
+    strategy:
+      max-parallel: 20
+      matrix:
+          board: [nrf54l15dk/nrf54l15/cpuapp/ns, nrf54l15dk/nrf54l15/cpuapp, nrf5340dk/nrf5340/cpuapp/ns, nrf5340dk/nrf5340/cpuapp, nrf52840dk/nrf52840, nrf52833dk/nrf52833, nrf52dk/nrf52832]
+          project: [l2/l2_e1_sol, l2/l2_e2_sol, l2/l2_e3_sol, l3/l3_e1_sol, l3/l3_e2_sol, l4/l4_e1_sol, l4/l4_e2_sol, l4/l4_e3_sol, l5/l5_e1_sol, l5/l5_e2_sol, l5/l5_e3_sol, l6/l6_e3_sol]
+      
+    runs-on: ubuntu-latest
+    continue-on-error: true 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Pull image
+        run: docker pull ghcr.io/lukaszbielaknordicsemi/nordicplayground/nrfconnect-sdk:${{ inputs.sdk }}
+      - name: Build sample
+        run: docker run  --rm -v ${PWD}:/workdir/project -w /workdir/project/${{ inputs.directory }} ghcr.io/lukaszbielaknordicsemi/nordicplayground/nrfconnect-sdk:${{ inputs.sdk }}  west build ${{ matrix.project }} -b ${{ matrix.board }} --build-dir ${{ matrix.project }}/build
