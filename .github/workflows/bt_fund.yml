@@ -29,7 +29,7 @@ jobs:
       max-parallel: 20
       matrix:
           board: [nrf54l15dk/nrf54l15/cpuapp/ns, nrf54l15dk/nrf54l15/cpuapp, nrf5340dk/nrf5340/cpuapp/ns, nrf5340dk/nrf5340/cpuapp, nrf52840dk/nrf52840, nrf52833dk/nrf52833, nrf52dk/nrf52832]
-          project: [l2/l2_e1_sol, l2/l2_e2_sol, l2/l2_e3_sol, l3/l3_e1_sol, l3/l3_e2_sol, l4/l4_e1_sol, l4/l4_e2_sol, l4/l4_e3_sol, l5/l5_e1_sol, l5/l5_e2_sol, l5/l5_e3_sol, l6/l6_e3_sol]
+          project: [l2/l2_e1_sol, l2/l2_e2_sol, l2/l2_e3_sol, l3/l3_e1_sol, l3/l3_e2_sol, l4/l4_e1_sol, l4/l4_e2_sol, l4/l4_e3_sol, l5/l5_e1_sol, l5/l5_e2_sol, l6/l6_e3_sol]
       
     runs-on: ubuntu-latest
     continue-on-error: true 
